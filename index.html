@@ -338,114 +338,186 @@
     transform:translateY(0);
   }
 
-  .action-list .reveal:nth-child(1){transition-delay:0s;}
-  .action-list .reveal:nth-child(2){transition-delay:0.12s;}
-  .action-list .reveal:nth-child(3){transition-delay:0.24s;}
+  .action-grid .reveal:nth-child(1){transition-delay:0s;}
+  .action-grid .reveal:nth-child(2){transition-delay:0.12s;}
+  .action-grid .reveal:nth-child(3){transition-delay:0.24s;}
 
-  /* ===================== READY / CTA ===================== */
+  /* ===================== READY / CTA — MODERN PANEL ===================== */
 
   .ready{
-    max-width:640px;
+    position:relative;
+    background:radial-gradient(120% 140% at 50% 0%, #24392d 0%, var(--night) 50%, #0c1610 100%);
+    padding:5.5rem 1.5rem 6rem;
+    overflow:hidden;
+    isolation:isolate;
+  }
+
+  .ready-glow{
+    position:absolute;
+    top:-20%; left:50%;
+    transform:translateX(-50%);
+    width:900px; height:500px;
+    background:radial-gradient(circle, rgba(217,155,61,0.16) 0%, transparent 65%);
+    z-index:0;
+    animation:glowPulse 8s ease-in-out infinite;
+  }
+
+  @keyframes glowPulse{
+    0%,100%{ opacity:0.6; }
+    50%{ opacity:1; }
+  }
+
+  .ready-inner{
+    position:relative;
+    z-index:1;
+    max-width:1080px;
     margin:0 auto;
-    padding:4.5rem 1.5rem 5.5rem;
   }
 
   .ready-head{
     text-align:center;
-    margin-bottom:2.2rem;
+    margin-bottom:3rem;
+  }
+
+  .ready-eyebrow{
+    display:inline-block;
+    text-transform:uppercase;
+    letter-spacing:0.24em;
+    font-size:0.68rem;
+    font-weight:600;
+    color:var(--gold);
+    margin-bottom:0.9rem;
   }
 
   .ready h2{
-    font-size:1.9rem;
+    font-size:clamp(1.9rem, 4vw, 2.6rem);
     font-weight:600;
+    color:var(--ivory);
   }
 
   .ready p{
-    color:#5a6259;
-    margin-top:0.6rem;
+    color:rgba(246,240,226,0.65);
+    margin-top:0.7rem;
+    font-size:1rem;
   }
 
-  .action-list{
-    display:flex;
-    flex-direction:column;
-    gap:0.9rem;
+  .action-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+    gap:1.4rem;
   }
 
   .action{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    width:100%;
-    background:#fff;
-    border:1.5px solid #e3dbc8;
-    border-radius:var(--radius);
-    padding:1.15rem 1.4rem;
-    text-align:left;
-    transition:border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
-    text-decoration:none;
+    --glow: var(--gold);
     position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:0.55rem;
+    background:linear-gradient(160deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02));
+    border:1px solid rgba(246,240,226,0.12);
+    border-radius:18px;
+    padding:1.8rem 1.6rem 1.6rem;
+    text-align:left;
+    text-decoration:none;
+    color:var(--ivory);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
     overflow:hidden;
+    cursor:pointer;
+    transition:transform 0.35s cubic-bezier(.22,1,.36,1), border-color 0.35s ease, box-shadow 0.35s ease;
   }
 
   .action::before{
     content:"";
     position:absolute;
-    top:0; left:-120%;
-    width:60%; height:100%;
-    background:linear-gradient(120deg, transparent, rgba(217,155,61,0.16), transparent);
-    transition:left 0.6s ease;
+    inset:0;
+    border-radius:inherit;
+    padding:1px;
+    background:linear-gradient(135deg, var(--glow), transparent 45%, transparent 60%, var(--glow));
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+    opacity:0;
+    transition:opacity 0.4s ease;
+    pointer-events:none;
   }
 
-  .action:hover::before{
-    left:130%;
+  .action::after{
+    content:"";
+    position:absolute;
+    top:-40%; left:-10%;
+    width:70%; height:180%;
+    background:radial-gradient(circle, rgba(255,255,255,0.08), transparent 70%);
+    transform:rotate(20deg);
+    opacity:0;
+    transition:opacity 0.4s ease, transform 0.6s ease;
+    pointer-events:none;
   }
 
   .action:hover{
-    border-color:var(--gold);
-    transform:translateY(-3px);
-    box-shadow:0 14px 28px rgba(20,35,28,0.1);
+    transform:translateY(-6px);
+    border-color:rgba(246,240,226,0.06);
+    box-shadow:0 20px 45px rgba(0,0,0,0.35), 0 0 0 1px rgba(246,240,226,0.04);
   }
 
-  .action .left{
-    display:flex;
-    align-items:center;
-    gap:0.9rem;
-  }
+  .action:hover::before{ opacity:1; }
+  .action:hover::after{ opacity:1; transform:rotate(20deg) translateX(10%); }
 
-  .action .icon{
-    width:38px; height:38px;
-    border-radius:50%;
+  .action.booking{ --glow: var(--gold); }
+  .action.whatsapp{ --glow: var(--teal); }
+  .action.email{ --glow: #c96a45; }
+
+  .action-icon{
+    width:52px; height:52px;
+    border-radius:14px;
     display:flex;
     align-items:center;
     justify-content:center;
     flex-shrink:0;
-    color:#fff;
+    margin-bottom:0.3rem;
+    transition:transform 0.4s cubic-bezier(.22,1,.36,1);
+    box-shadow:0 8px 20px rgba(0,0,0,0.25);
+  }
+
+  .action.booking .action-icon{ background:linear-gradient(140deg, var(--gold), var(--gold-deep)); }
+  .action.whatsapp .action-icon{ background:linear-gradient(140deg, #379e88, var(--teal)); }
+  .action.email .action-icon{ background:linear-gradient(140deg, #c96a45, var(--rust)); }
+
+  .action:hover .action-icon{
+    transform:scale(1.08) rotate(-6deg);
+  }
+
+  .action-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.2rem;
+  }
+
+  .action-sub{
+    font-size:0.88rem;
+    color:rgba(246,240,226,0.6);
+    line-height:1.5;
+  }
+
+  .action-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:0.4rem;
+    margin-top:0.7rem;
+    font-size:0.82rem;
+    font-weight:600;
+    letter-spacing:0.02em;
+    color:var(--glow);
+  }
+
+  .action-cta .chev{
+    display:inline-block;
     transition:transform 0.3s ease;
   }
 
-  .action:hover .icon{
-    transform:scale(1.1) rotate(-4deg);
-  }
-
-  .action.booking .icon{background:var(--gold-deep);}
-  .action.whatsapp .icon{background:var(--teal);}
-  .action.email .icon{background:var(--rust);}
-
-  .action .title{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    font-size:1.05rem;
-    display:block;
-  }
-
-  .action .sub{
-    font-size:0.82rem;
-    color:#7a8177;
-  }
-
-  .action .arrow{
-    font-size:1.2rem;
-    color:#b5ab90;
+  .action:hover .action-cta .chev{
+    transform:translateX(5px);
   }
 
   /* ===================== BOOKING MODAL ===================== */
@@ -644,14 +716,15 @@
     .about h2{ font-size:1.4rem; }
     .about p{ font-size:0.95rem; }
 
-    .ready{ padding:3rem 1.1rem 3.5rem; }
+    .ready{ padding:3.5rem 1.1rem 4rem; }
     .ready h2{ font-size:1.55rem; }
+    .ready-glow{ width:600px; height:340px; }
 
-    .action{ padding:1rem 1.1rem; }
-    .action .icon{ width:34px; height:34px; }
-    .action .title{ font-size:0.98rem; }
-    .action .sub{ font-size:0.78rem; }
-    .action .arrow{ display:none; }
+    .action-grid{ grid-template-columns:1fr; gap:1rem; }
+    .action{ padding:1.4rem 1.3rem; }
+    .action-icon{ width:44px; height:44px; border-radius:12px; }
+    .action-title{ font-size:1.05rem; }
+    .action-sub{ font-size:0.84rem; }
 
     .modal{ padding:1.8rem 1.3rem 1.6rem; border-radius:14px 14px 0 0; }
     .modal-overlay{ align-items:flex-end; padding:0; }
@@ -675,7 +748,7 @@
 <header class="hero">
   <div class="hero-inner">
     <div class="emblem-wrap">
-      <img src="logo.png" alt="MMEXY Adventures TZ logo" class="emblem" onerror="this.style.display='none'">
+      <img src="https://www.mmexy.com/assets/images/logo.png" alt="MMEXY Adventures TZ logo" class="emblem" onerror="this.style.display='none'">
     </div>
 
     <p class="eyebrow reveal">Tanzania Safaris &amp; Zanzibar Holidays</p>
@@ -725,50 +798,43 @@
 
 <!-- ===================== READY / CTA ===================== -->
 <section class="ready" id="ready">
-  <div class="ready-head reveal">
-    <h2>Are you ready?</h2>
-    <p>Choose how you'd like to start planning your trip.</p>
-  </div>
+  <div class="ready-glow" aria-hidden="true"></div>
 
-  <div class="action-list">
-    <button class="action booking reveal" id="openBooking" type="button">
-      <span class="left">
-        <span class="icon" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 3v3M17 3v3M4 9h16M5 6h14a1 1 0 011 1v12a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </span>
-        <span>
-          <span class="title">Booking</span><br>
-          <span class="sub">Fill a short form — sent straight to our WhatsApp</span>
-        </span>
-      </span>
-      <span class="arrow" aria-hidden="true">&rarr;</span>
-    </button>
+  <div class="ready-inner">
+    <div class="ready-head reveal">
+      <span class="ready-eyebrow">Three simple ways</span>
+      <h2>Are you ready?</h2>
+      <p>Choose how you'd like to start planning your trip.</p>
+    </div>
 
-    <a class="action whatsapp reveal" id="whatsappLink" href="#" target="_blank" rel="noopener">
-      <span class="left">
-        <span class="icon" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M17.5 6.5A8 8 0 004.8 16.2L4 20l3.9-.8A8 8 0 1017.5 6.5z" stroke="#fff" stroke-width="1.6"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg>
+    <div class="action-grid">
+      <button class="action booking reveal" id="openBooking" type="button">
+        <span class="action-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 3v3M17 3v3M4 9h16M5 6h14a1 1 0 011 1v12a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </span>
-        <span>
-          <span class="title">WhatsApp Message</span><br>
-          <span class="sub">Chat with us directly for planning &amp; questions</span>
-        </span>
-      </span>
-      <span class="arrow" aria-hidden="true">&rarr;</span>
-    </a>
+        <span class="action-title">Booking</span>
+        <span class="action-sub">Fill a short form — sent straight to our WhatsApp</span>
+        <span class="action-cta">Start now <span class="chev" aria-hidden="true">&rarr;</span></span>
+      </button>
 
-    <a class="action email reveal" id="emailLink" href="#">
-      <span class="left">
-        <span class="icon" aria-hidden="true">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="#fff" stroke-width="1.6"/><path d="M4 7l8 6 8-6" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <a class="action whatsapp reveal" id="whatsappLink" href="#" target="_blank" rel="noopener">
+        <span class="action-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M17.5 6.5A8 8 0 004.8 16.2L4 20l3.9-.8A8 8 0 1017.5 6.5z" stroke="#fff" stroke-width="1.6"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></svg>
         </span>
-        <span>
-          <span class="title">Email Address</span><br>
-          <span class="sub">Prefer email? Reach us directly</span>
+        <span class="action-title">WhatsApp Message</span>
+        <span class="action-sub">Chat with us directly for planning &amp; questions</span>
+        <span class="action-cta">Chat now <span class="chev" aria-hidden="true">&rarr;</span></span>
+      </a>
+
+      <a class="action email reveal" id="emailLink" href="#">
+        <span class="action-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v12H4z" stroke="#fff" stroke-width="1.6"/><path d="M4 7l8 6 8-6" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
         </span>
-      </span>
-      <span class="arrow" aria-hidden="true">&rarr;</span>
-    </a>
+        <span class="action-title">Email Address</span>
+        <span class="action-sub">Prefer email? Reach us directly</span>
+        <span class="action-cta">Send now <span class="chev" aria-hidden="true">&rarr;</span></span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -854,7 +920,7 @@
   const waLink = document.getElementById('whatsappLink');
   const emailLink = document.getElementById('emailLink');
 
-  waLink.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("Hi MMEXY Adventures TZ, I'd like to know more about your tours.")}`;
+  waLink.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent("👋 Hi *MMEXY Adventures TZ*! I'd like to know more about your safari & Zanzibar tours 🌍")}`;
   emailLink.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Enquiry - MMEXY Adventures TZ')}`;
 
   // About "Read more" toggle
@@ -902,15 +968,27 @@
     const phone      = document.getElementById('phone').value.trim();
     const country    = document.getElementById('country').value.trim();
     const people     = document.getElementById('people').value;
-    const travelDate = document.getElementById('travelDate').value;
+    const travelDateRaw = document.getElementById('travelDate').value;
 
-    let message = `New Booking Request — MMEXY Adventures TZ\n`;
-    message += `Name: ${fullName}\n`;
-    message += `Email: ${email}\n`;
-    message += `WhatsApp number: ${phone}\n`;
-    message += `Country: ${country}\n`;
-    message += `Number of travelers: ${people}\n`;
-    if (travelDate) message += `Date of travel: ${travelDate}\n`;
+    let travelDate = '';
+    if (travelDateRaw){
+      const d = new Date(travelDateRaw + 'T00:00:00');
+      travelDate = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
+
+    const divider = '━━━━━━━━━━━━━━━';
+
+    let message = `🌍 *NEW BOOKING REQUEST*\n`;
+    message += `*MMEXY Adventures TZ*\n`;
+    message += `${divider}\n`;
+    message += `👤 *Name:* ${fullName}\n`;
+    message += `📧 *Email:* ${email}\n`;
+    message += `📱 *WhatsApp:* ${phone}\n`;
+    message += `🌐 *Country:* ${country}\n`;
+    message += `👥 *Travelers:* ${people}\n`;
+    if (travelDate) message += `📅 *Travel date:* ${travelDate}\n`;
+    message += `${divider}\n`;
+    message += `✨ _Looking forward to planning this trip with you!_`;
 
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank', 'noopener');
